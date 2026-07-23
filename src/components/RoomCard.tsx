@@ -27,7 +27,7 @@ function RoomCard({ room }: RoomCardProps) {
           <span className="flex items-center gap-1.5"><Bath size={14} /> {room.bathrooms} Bath</span>
         </div>
 
-        <Link to={`/rooms/${room.id}`} className="block text-center bg-primary text-white rounded-full py-3 font-body text-sm tracking-wide hover:bg-accent transition-colors">
+        <Link to={`/rooms/${room.slug}`} className="block text-center bg-primary text-white rounded-full py-3 font-body text-sm tracking-wide hover:bg-accent transition-colors">
           View Details
         </Link>
       </div>

@@ -1,16 +1,22 @@
 ﻿import { useState } from "react";
+import { useNavigate } from "react-router-dom";
 import { Calendar, Users, Tag } from "lucide-react";
 
 function BookingWidget() {
+  const navigate = useNavigate();
   const [checkIn, setCheckIn] = useState("");
   const [checkOut, setCheckOut] = useState("");
   const [guests, setGuests] = useState(2);
-  const [rooms] = useState(1);
   const [promoCode, setPromoCode] = useState("");
 
   const handleSearch = (e: React.FormEvent) => {
     e.preventDefault();
-    console.log({ checkIn, checkOut, guests, rooms, promoCode });
+    const params = new URLSearchParams();
+    if (checkIn) params.set("checkIn", checkIn);
+    if (checkOut) params.set("checkOut", checkOut);
+    if (guests) params.set("guests", String(guests));
+    if (promoCode) params.set("promo", promoCode);
+    navigate(`/rooms?${params.toString()}`);
   };
 
   return (
@@ -28,7 +34,6 @@ function BookingWidget() {
             value={checkIn}
             onChange={(e) => setCheckIn(e.target.value)}
             className="font-body text-sm text-primary border-b border-primary/20 pb-2 focus:outline-none focus:border-accent"
-            required
           />
         </div>
 
@@ -41,7 +46,6 @@ function BookingWidget() {
             value={checkOut}
             onChange={(e) => setCheckOut(e.target.value)}
             className="font-body text-sm text-primary border-b border-primary/20 pb-2 focus:outline-none focus:border-accent"
-            required
           />
         </div>
 

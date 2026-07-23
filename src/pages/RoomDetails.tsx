@@ -1,14 +1,35 @@
-﻿import { useParams, Link } from "react-router-dom";
+﻿import { useEffect, useState } from "react";
+import { useParams, Link } from "react-router-dom";
 import { motion } from "framer-motion";
 import { Helmet } from "react-helmet-async";
 import { Users, BedDouble, Bath, Maximize, Check, ArrowLeft } from "lucide-react";
-import { rooms } from "../constants/rooms.data";
+import { getRoomBySlug } from "../services/rooms.service";
+import type { Room } from "../types/room.types";
+import RoomBookingForm from "../components/RoomBookingForm";
 
 function RoomDetails() {
   const { roomId } = useParams();
-  const room = rooms.find((r) => r.id === roomId);
+  const [room, setRoom] = useState<Room | null>(null);
+  const [loading, setLoading] = useState(true);
+  const [notFound, setNotFound] = useState(false);
 
-  if (!room) {
+  useEffect(() => {
+    if (!roomId) return;
+    getRoomBySlug(roomId)
+      .then((res) => setRoom(res.data))
+      .catch(() => setNotFound(true))
+      .finally(() => setLoading(false));
+  }, [roomId]);
+
+  if (loading) {
+    return (
+      <div className="min-h-screen flex items-center justify-center">
+        <p className="font-body text-primary/50">Loading room...</p>
+      </div>
+    );
+  }
+
+  if (notFound || !room) {
     return (
       <div className="min-h-screen flex flex-col items-center justify-center px-6 text-center">
         <h1 className="font-heading text-3xl text-primary mb-4">Room Not Found</h1>
@@ -68,14 +89,8 @@ function RoomDetails() {
           </ul>
         </motion.div>
 
-        <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.6, delay: 0.1 }} className="bg-white rounded-2xl shadow-lg p-8 h-fit sticky top-24">
-          <p className="font-heading text-3xl text-primary mb-1">
-            ${room.price}<span className="font-body text-base text-primary/50"> / night</span>
-          </p>
-          <p className="font-body text-xs text-primary/50 mb-6">Includes breakfast & free WiFi</p>
-          <a href="#booking" className="block text-center bg-accent text-white rounded-full py-3.5 font-body text-sm tracking-wide hover:bg-primary transition-colors">
-            Book This Room
-          </a>
+        <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.6, delay: 0.1 }} className="h-fit sticky top-24">
+          <RoomBookingForm room={room} />
         </motion.div>
       </section>
     </div>

@@ -1,14 +1,41 @@
 ﻿import { useParams, Link } from "react-router-dom";
+import { useState, useEffect } from "react";
 import { motion } from "framer-motion";
 import { Helmet } from "react-helmet-async";
 import { ArrowLeft, Calendar, Tag } from "lucide-react";
-import { blogPosts } from "../constants/blog.data";
+import { blogService } from "../services/contentServices";
+import type { BlogPost } from "../types/content.types";
 
-function BlogPost() {
+function BlogPostPage() {
   const { postId } = useParams();
-  const post = blogPosts.find((p) => p.id === postId);
+  const [post, setPost] = useState<BlogPost | null>(null);
+  const [loading, setLoading] = useState(true);
+  const [notFound, setNotFound] = useState(false);
 
-  if (!post) {
+  useEffect(() => {
+    if (!postId) return;
+    blogService.getAll()
+      .then((res) => {
+        const found = res.data.find((p) => p.slug === postId);
+        if (!found) {
+          setNotFound(true);
+        } else {
+          setPost(found);
+        }
+      })
+      .catch(() => setNotFound(true))
+      .finally(() => setLoading(false));
+  }, [postId]);
+
+  if (loading) {
+    return (
+      <div className="min-h-screen flex items-center justify-center">
+        <p className="font-body text-primary/50">Loading article...</p>
+      </div>
+    );
+  }
+
+  if (notFound || !post) {
     return (
       <div className="min-h-screen flex flex-col items-center justify-center px-6 text-center">
         <h1 className="font-heading text-3xl text-primary mb-4">Article Not Found</h1>
@@ -35,7 +62,6 @@ function BlogPost() {
       <motion.article initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.6 }} className="max-w-3xl mx-auto px-6 py-16">
         <div className="flex items-center gap-4 font-body text-xs text-primary/50 mb-4">
           <span className="flex items-center gap-1.5"><Tag size={14} /> {post.category}</span>
-          <span className="flex items-center gap-1.5"><Calendar size={14} /> {post.date}</span>
         </div>
         <h1 className="font-heading text-4xl text-primary mb-8 leading-tight">{post.title}</h1>
         {post.content.map((paragraph, index) => (
@@ -46,4 +72,4 @@ function BlogPost() {
   );
 }
 
-export default BlogPost;
+export default BlogPostPage;

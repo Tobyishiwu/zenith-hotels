@@ -1,8 +1,18 @@
-﻿import { motion } from "framer-motion";
+﻿import { useState, useEffect } from "react";
+import { motion } from "framer-motion";
 import { Star, Quote } from "lucide-react";
-import { testimonials } from "../constants/testimonials.data";
+import { testimonialService } from "../services/contentServices";
+import type { Testimonial } from "../types/content.types";
 
 function Testimonials() {
+  const [testimonials, setTestimonials] = useState<Testimonial[]>([]);
+
+  useEffect(() => {
+    testimonialService.getAll()
+      .then((res) => setTestimonials(res.data))
+      .catch((err) => console.error("Failed to load testimonials:", err));
+  }, []);
+
   return (
     <section className="bg-surface py-24 px-6">
       <div className="max-w-7xl mx-auto">
@@ -14,7 +24,7 @@ function Testimonials() {
         <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
           {testimonials.map((t, index) => (
             <motion.div
-              key={t.id}
+              key={t._id}
               initial={{ opacity: 0, y: 20 }}
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}

@@ -1,7 +1,9 @@
 ﻿export interface Room {
-  id: string;
+  _id: string;
   name: string;
+  slug: string;
   image: string;
+  gallery: string[];
   price: number;
   size: string;
   occupancy: number;
@@ -9,4 +11,5 @@
   bathrooms: number;
   description: string;
   amenities: string[];
+  isActive: boolean;
 }
