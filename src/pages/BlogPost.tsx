@@ -2,7 +2,7 @@
 import { useState, useEffect } from "react";
 import { motion } from "framer-motion";
 import { Helmet } from "react-helmet-async";
-import { ArrowLeft, Calendar, Tag } from "lucide-react";
+import { ArrowLeft, Tag } from "lucide-react";
 import { blogService } from "../services/contentServices";
 import type { BlogPost } from "../types/content.types";
 
@@ -73,3 +73,4 @@ function BlogPostPage() {
 }
 
 export default BlogPostPage;
+
