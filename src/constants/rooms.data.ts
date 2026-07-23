@@ -1,0 +1,40 @@
+﻿import type { Room } from "../types/room.types";
+
+export const rooms: Room[] = [
+  {
+    id: "deluxe-suite",
+    name: "Deluxe Suite",
+    image: "https://images.unsplash.com/photo-1591088398332-8a7791972843?q=80&w=1200",
+    price: 320,
+    size: "45 sqm",
+    occupancy: 2,
+    beds: "1 King Bed",
+    bathrooms: 1,
+    description: "Elegant suite with panoramic city views, marble bathroom, and a private lounge area.",
+    amenities: ["Free WiFi", "City View", "Mini Bar", "Air Conditioning"],
+  },
+  {
+    id: "ocean-view-room",
+    name: "Ocean View Room",
+    image: "https://images.unsplash.com/photo-1611892440504-42a792e24d32?q=80&w=1200",
+    price: 280,
+    size: "38 sqm",
+    occupancy: 2,
+    beds: "1 Queen Bed",
+    bathrooms: 1,
+    description: "Wake up to breathtaking ocean views with a private balcony and premium furnishings.",
+    amenities: ["Free WiFi", "Ocean View", "Balcony", "Room Service"],
+  },
+  {
+    id: "presidential-suite",
+    name: "Presidential Suite",
+    image: "https://images.unsplash.com/photo-1582719508461-905c673771fd?q=80&w=1200",
+    price: 650,
+    size: "90 sqm",
+    occupancy: 4,
+    beds: "2 King Beds",
+    bathrooms: 2,
+    description: "The pinnacle of luxury with a private terrace, jacuzzi, and dedicated butler service.",
+    amenities: ["Free WiFi", "Private Terrace", "Jacuzzi", "Butler Service"],
+  },
+];
