@@ -1,13 +1,14 @@
 ﻿import { useState } from "react";
-import { Calendar, Users, User, Mail, Phone, Tag, CheckCircle2, AlertCircle } from "lucide-react";
+import { Calendar, Users, User, Mail, Phone, Tag, AlertCircle } from "lucide-react";
 import { checkAvailability, createBooking } from "../services/bookings.service";
+import { initiatePayment } from "../services/payment.service";
 import type { Room } from "../types/room.types";
 
 interface RoomBookingFormProps {
   room: Room;
 }
 
-type FormStep = "dates" | "details" | "success";
+type FormStep = "dates" | "details";
 
 function RoomBookingForm({ room }: RoomBookingFormProps) {
   const [step, setStep] = useState<FormStep>("dates");
@@ -21,7 +22,6 @@ function RoomBookingForm({ room }: RoomBookingFormProps) {
   const [checking, setChecking] = useState(false);
   const [submitting, setSubmitting] = useState(false);
   const [error, setError] = useState("");
-  const [bookingResult, setBookingResult] = useState<{ totalPrice: number } | null>(null);
 
   const nights =
     checkIn && checkOut
@@ -68,7 +68,7 @@ function RoomBookingForm({ room }: RoomBookingFormProps) {
 
     setSubmitting(true);
     try {
-      const res = await createBooking({
+      const bookingRes = await createBooking({
         roomId: room._id,
         guestName,
         guestEmail,
@@ -78,30 +78,14 @@ function RoomBookingForm({ room }: RoomBookingFormProps) {
         guests,
         promoCode: promoCode || undefined,
       });
-      setBookingResult({ totalPrice: res.data.totalPrice });
-      setStep("success");
+
+      const paymentRes = await initiatePayment(bookingRes.data._id);
+      window.location.href = paymentRes.data.authorizationUrl;
     } catch (err) {
       setError((err as Error).message || "Failed to create booking. Please try again.");
-    } finally {
       setSubmitting(false);
     }
   };
-
-  if (step === "success") {
-    return (
-      <div id="booking" className="bg-white rounded-2xl shadow-lg p-8 text-center">
-        <CheckCircle2 className="text-accent mx-auto mb-4" size={48} />
-        <h3 className="font-heading text-2xl text-primary mb-2">Booking Confirmed</h3>
-        <p className="font-body text-primary/60 mb-4">
-          Thank you, {guestName}. Your reservation for {room.name} has been received.
-        </p>
-        <p className="font-heading text-2xl text-accent mb-1">${bookingResult?.totalPrice}</p>
-        <p className="font-body text-xs text-primary/50">
-          A confirmation will be sent to {guestEmail} once approved by our team.
-        </p>
-      </div>
-    );
-  }
 
   return (
     <div id="booking" className="bg-white rounded-2xl shadow-lg p-8">
@@ -241,7 +225,7 @@ function RoomBookingForm({ room }: RoomBookingFormProps) {
               disabled={submitting}
               className="flex-1 bg-accent text-white rounded-full py-3 font-body text-sm tracking-wide hover:bg-primary transition-colors disabled:opacity-60"
             >
-              {submitting ? "Booking..." : "Confirm Booking"}
+              {submitting ? "Redirecting to payment..." : "Proceed to Payment"}
             </button>
           </div>
         </form>

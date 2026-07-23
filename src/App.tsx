@@ -21,6 +21,7 @@ import About from "./pages/About";
 import FAQ from "./pages/FAQ";
 import Contact from "./pages/Contact";
 import NotFound from "./pages/NotFound";
+import PaymentCallback from "./pages/PaymentCallback";
 import AdminLogin from "./pages/admin/AdminLogin";
 import AdminDashboard from "./pages/admin/AdminDashboard";
 import AdminBookings from "./pages/admin/AdminBookings";
@@ -53,6 +54,7 @@ function App() {
             <Route path="/about" element={<About />} />
             <Route path="/faq" element={<FAQ />} />
             <Route path="/contact" element={<Contact />} />
+            <Route path="/payment/callback" element={<PaymentCallback />} />
             <Route path="*" element={<NotFound />} />
           </Route>
 
@@ -80,3 +82,4 @@ function App() {
 }
 
 export default App;
+
