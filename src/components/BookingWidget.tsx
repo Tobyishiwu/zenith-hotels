@@ -5,7 +5,7 @@ function BookingWidget() {
   const [checkIn, setCheckIn] = useState("");
   const [checkOut, setCheckOut] = useState("");
   const [guests, setGuests] = useState(2);
-  const [rooms, setRooms] = useState(1);
+  const [rooms] = useState(1);
   const [promoCode, setPromoCode] = useState("");
 
   const handleSearch = (e: React.FormEvent) => {

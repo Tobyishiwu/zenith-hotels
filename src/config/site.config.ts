@@ -1,6 +1,8 @@
 ﻿import type { SiteConfig } from "../types/config.types";
 
 export const siteConfig: SiteConfig = {
+  checkInTime: "2:00 PM",
+  checkOutTime: "12:00 PM",
   branding: {
     hotelName: "Zenith Hotels",
     tagline: "Where Luxury Meets the Horizon",

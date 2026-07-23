@@ -1,4 +1,6 @@
 ﻿export interface SiteConfig {
+  checkInTime: string;
+  checkOutTime: string;
   branding: {
     hotelName: string;
     tagline: string;

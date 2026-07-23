@@ -1,6 +1,6 @@
 ﻿import { motion } from "framer-motion";
 import { Helmet } from "react-helmet-async";
-import { Heart, Camera, Users, Mail } from "lucide-react";
+import { Heart, Camera, Users } from "lucide-react";
 
 const packages = [
   { name: "Intimate Ceremony", guests: "Up to 50 guests", price: "From $3,500" },

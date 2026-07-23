@@ -2,11 +2,6 @@
 import { Helmet } from "react-helmet-async";
 import { Building2, PartyPopper, Users, Mail } from "lucide-react";
 
-const eventTypes = [
-  { icon: "Building2", title: "Corporate Events", description: "State-of-the-art conference facilities equipped with the latest AV technology for meetings, seminars, and product launches." },
-  { icon: "PartyPopper", title: "Conferences", description: "Host large-scale conferences with flexible seating arrangements and dedicated event coordination support." },
-  { icon: "Users", title: "Banquet Hall", description: "An elegant banquet hall accommodating up to 300 guests for galas, celebrations, and formal gatherings." },
-];
 
 function Events() {
   return (
@@ -59,3 +54,4 @@ function Events() {
 }
 
 export default Events;
+
